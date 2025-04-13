@@ -1,53 +1,46 @@
+
 {% extends 'base.html' %}
 
-{%block head%}
+{% block head %}
+    <title>Task Master</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
 
-<title>Task Master </title>
-
-{%endblock%}
-
-{%block body%}
-<div class= "content">
+{% block body %}
+<div class="content">
     <h1>Task Master</h1>
 
     {% if tasks|length < 1 %}
-
-    <h4 style="text-align: center"> There are no task. Create one below!</h4>
-    
-    
-    {%else %}
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Added</th>
-            <th>Actions</th>
-        </tr>
+        <p class="no-task">There are no tasks. Create one below!</p>
+    {% else %}
+    <table class="task-table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for task in tasks %}
-
-        <tr>
-            <td>{{ task.content }}</td>
-            <td>{{ task.date_created.date() }}</td>
-            <td>
-             
-                <a href="/delete/{{task.id}}">Delete</a>  
-                <br>
-                <a href="/update/{{task.id}}">Update</a>
-            </td>
-        </tr>
+            <tr>
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created.date() }}</td>
+                <td>
+                    <a class="action-btn delete" href="/delete/{{ task.id }}">Delete</a>
+                    <a class="action-btn update" href="/update/{{ task.id }}">Update</a>
+                </td>
+            </tr>
         {% endfor %}
-
-
-
+        </tbody>
     </table>
-    {%endif%}
-    <div class = 'form'>
-        <form action="/" method = "POST">
+    {% endif %}
 
-            <input type="text" name="content" id="content">
-            <input type="submit" value="Add Task">
-
+    <div class="form-container">
+        <form action="/" method="POST">
+            <input type="text" name="content" id="content" placeholder="Enter a new task..." required>
+            <input type="submit" value="Add Task" class="submit-btn">
         </form>
     </div>
 </div>
-{%endblock%}
-
+{% endblock %}
